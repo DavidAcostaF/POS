@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{%load static%}
+{%block h1_dashboard%}Inventory{%endblock h1_dashboard%}
+{%block dashboard%}Inventory{%endblock dashboard%}
+{%block body%}
+
+<div id="modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <form action="" method="post" id="form_delete"
+            enctype="multipart/form-data"
+            class="modal-content modal-dialog modal-lg">
+            {% csrf_token %}
+            <div class="modal-header">
+                <h2 class="modal-title">Delete Task {{product.id}}</h2>
+                <button class="btn-close" type="button" data-bs-dismiss="modal"
+                    aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+                <button id="boton_creacion" class="btn btn-primary"
+                    type="submit">Confirmar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Product</th>
+            <th scope="col">Description</th>
+            <th scope="col">Price</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for product in object_list%}
+        <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{product.name}}</td>
+            <td>{{product.description}}</td>
+            <td>{{product.price}}</td>
+            <td>{{product.stock}}</td>
+            <td>
+                <button class="btn btn-secondary" hx-get="{%url 'update_inventory' product.id%}"
+                    hx-target="#dialog">Update</button>
+                <button class="btn btn-danger" onclick="deleteInventory({{product.id}})">Delete</button>
+            </td>
+        </tr>
+
+        {%endfor%}
+    </tbody>
+</table>
+{%endblock body%}
+
+{% block extrajs %}
+<script src="https://unpkg.com/htmx.org@1.8.0"
+    integrity="sha384-cZuAZ+ZbwkNRnrKi05G/fjBX+azI9DNOkNYysZ0I/X5ZFgsmMiBXgDZof30F5ofc"
+    crossorigin="anonymous"></script>
+    <script src="{%static 'assets/js/index.js'%}"></script>
+{% endblock extrajs %}

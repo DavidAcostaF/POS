@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{%load static%}
+{%block h1_dashboard%}Total Sales{%endblock h1_dashboard%}
+{%block dashboard%}Total Sales{%endblock dashboard%}
+{%block body%}
+<div style="display: flex;align-items: center;">
+        <a href="{%url 'pdf_file'%}"><button type="button" class="btn btn-danger">
+            <i class="fa-solid fa-file-pdf" style="font-size:20px;"></i> Convert to PDF</button></a>
+
+        <a href="{%url 'create_csv'%}"><button type="button" class="btn btn-success" style="margin: 0 0 0 10px;">
+            <i class="fa-solid fa-file-csv" style="font-size:20px;"></i> Convert to CSV</button></a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">User</th>
+            <th scope="col">Product</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total</th>
+            <th scope="col">Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for product in objects%}
+        <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{product.user}}</td>
+            <td>{{product.product}}</td>
+            <td>{{product.quantity}}</td>
+            <td>{{product.total}}</td>
+            <td></td>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Total products</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        <td>{{objects.count}}</td>
+        <td>{{total.total}}</td>
+    </tbody>
+</table>
+{%endblock body%}

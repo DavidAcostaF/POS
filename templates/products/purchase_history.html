@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{%block extra_css%}
+<link rel="stylesheet" href="{%static 'assets/css/products.css'%}">
+{%endblock extra_css%}
+{%block h1_dashboard%}Purchase History{%endblock h1_dashboard%}
+{%block dashboard%}Purchase History{%endblock dashboard%}
+{%block body%}
+
+<div class="container-grid">
+    {% for product in history %}
+    <div class="overlay-box" style="background-image:
+        url('{{product.product.image.url}}'); border-radius: 20px;">
+        <div class="desc" style="font-size:16px">
+            <p>{{product.product.name}}</p>
+            <p>{{product.product.description}}</p>
+            <p><label for="">Quantity:</label> {{product.quantity}}</p>
+            <p ><label for="">Price:</label> {{product.subtotal}}</p>
+            <a href="{%url 'product_detail' product.product.name%}" class="btn btn-link" style="margin-top: 40px;color: white; font-size: 20px; text-decoration: none;">Click to more</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{%endblock body%}
+
+{%block extra%}
+
+{%endblock extra%}

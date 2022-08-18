@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="card mb-3" style="width: 740px;height: 400px;border-radius: 50px;">
+    <div class="row g-0">
+        <div class="col-md-4">
+            <img src="{{product.image.url}}" class="" alt="..." style="width:
+                400px;border-radius: 50px 0 0 50px;">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body" style="margin-left: 140px;">
+                <h5 class="card-title">{{product.name}}</h5>
+                <p class="card-text">{{product.description}}.</p>
+                <label for="input">Quantity</label><br>
+                <input type="number" value="0" class="form-control" style="width:65px" min="0" max="{{product.stock}}"
+                    id="input">{% csrf_token %}
+                <p class="card-text" style="float: right;">Stock:
+                    {{product.stock}}</p>
+                <p class="card-text" style="margin-top:10px"><button
+                        type="button" onclick="addToCarWithQuantity({{product.id}})"
+                        class="btn btn-success">Add to cart</button></p>
+                <p class="card-text"><small class="text-muted">Last updated 3
+                        mins ago</small></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

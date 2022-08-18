@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{%block h1_dashboard%}Add Products{%endblock h1_dashboard%}
+{%block dashboard%}Add Products{%endblock dashboard%}
+{%block body%}
+<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+    {{form.as_p}}
+    <button type="submit" class="btn btn-success">Add</button>
+</form>
+
+{%endblock body%}

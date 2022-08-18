@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{%block extra_css%}
+<link rel="stylesheet" href="{%static 'assets/css/products.css'%}">
+{%endblock extra_css%}
+{%block h1_dashboard%}Products{%endblock h1_dashboard%}
+{%block dashboard%}{%endblock dashboard%}
+
+{%block value%}
+{{request.GET.query}}
+{%endblock value%}
+{%block body%}
+
+
+<div class="container-grid">
+    {% for product in object_list %}
+    <div class="overlay-box" style="background-image:
+        url('{{product.image.url}}'); border-radius: 20px;">
+        <div class="desc" style="font-size: 18px;">
+            <p>{{product.name}}</p>
+            <p ><label for="">Price:</label> {{product.price}}</p>
+            <p style="float: right;"><label for="">Stock:</label> {{product.stock}}</p>
+            <form action="{%url 'add_car' product.id%}" method="post">{% csrf_token %}
+                <button type="submit" class="btn btn-success" {% comment %}onclick="addToCar({{product.id}})" {% endcomment %}><i class="fa-solid fa-cart-plus"></i>Add To Car</button>
+            </form>
+            <a href="{%url 'product_detail' product.name%}" class="btn btn-link" style="margin-top: 80px;color: white; font-size: 20px; text-decoration: none;">Click to more</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{%endblock body%}
+
+{%block extra%}
+
+{%endblock extra%}

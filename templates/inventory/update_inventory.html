@@ -1,0 +1,20 @@
+<form action="{{request.path}}" method="post" enctype="multipart/form-data"
+    class="modal-content modal-dialog modal-lg">
+    {% csrf_token %}
+    <div class="modal-header">
+        <h2 class="modal-title">Update Product {{product.id}}</h2>
+        <button class="btn-close" type="button" data-bs-dismiss="modal"
+            aria-label="Close">
+        </button>
+    </div>
+    <div class="modal-body">
+        {{form.as_p}}
+        <img src="{{form.instance.image.url}}" style="width: 100px;height:100px;">
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"
+            data-bs-dismiss="modal">Close</button>
+        <button id="boton_creacion" class="btn btn-primary"
+            type="submit">Confirmar</button>
+    </div>
+</form>

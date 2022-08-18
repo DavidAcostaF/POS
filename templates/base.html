@@ -1,0 +1,265 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Dashboard - NiceAdmin Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{%static 'assets/img/favicon.png'%}" rel="icon">
+  <link href="{%static 'assets/img/apple-touch-icon.png'%}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <!-- Vendor CSS Files -->
+  <link href="{%static 'assets/vendor/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
+  <script src="https://unpkg.com/htmx.org@1.8.0" integrity="sha384-cZuAZ+ZbwkNRnrKi05G/fjBX+azI9DNOkNYysZ0I/X5ZFgsmMiBXgDZof30F5ofc" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+  <!-- Template Main CSS File -->
+  <link href="{%static 'assets/css/style.css'%}" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  {%block extra_css%}
+  {%endblock extra_css%}
+  <!-- =======================================================
+  * Template Name: NiceAdmin - v2.3.1
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+    
+  <div id="modals" class="modal fade" tabindex="-1">
+    <div id="dialog" class="modal-dialog" hx-target="this">
+
+    </div>
+</div>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <!-- <img src="assets/img/logo.png" alt=""> -->
+        <span class="d-none d-lg-block">NiceAdmin</span>
+      </a>
+      <i class="fa-solid fa-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="get" action="{%url 'filter_products'%}">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword" value="{%block value%}{%endblock value%}">
+        <button type="submit" title="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-icon" onclick="openNav()" style="cursor:pointer">
+            <i class="fa-solid fa-cart-shopping" style="font-size:30px;"></i>
+            <span class="badge bg-primary badge-number">{{products.count}}</span>
+          </a><!-- End Messages Icon -->
+        </li><!-- End Notification Nav -->
+        </li>
+        <div id="mySidenav" class="sidenav">
+          <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+          <table class="table" style="color: white;">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Cost</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Subtotal</th>
+                <th scope="col">Options</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for cart in products%}
+              <tr style="color: white;" id="product_{{cart.id}}">
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{cart.product.name}}</td>
+                <td>{{cart.product.description}}</td>
+                <td id="cost_{{cart.id}}">{{cart.product.price}}</td>
+                <td><input type="number" value="{{cart.quantity}}" min="0" name="" max="{{cart.product.stock}}" id="quantity_{{cart.id}}" style="width: 50px; color: white; background: #111;" onclick="updateQuantity({{cart.id}})" onchange="updateQuantity({{cart.id}})"></td>
+                <td id="subtotal_{{cart.id}}" class="sub_total">{{cart.subtotal}}</td>
+                <td><button  class="btn btn-danger" onclick="deleteInCart({{cart.id}})">Delete</button></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% if products%}
+          <h3 for="total" style="float:right;color:white">Total:<span id="total"></span></h3>
+          <form action="{%url 'buy'%}" method="post" style="text-align:center;" >{% csrf_token %}
+            <i class="fa-solid fa-cart-circle-check"></i><button type="submit" class="btn btn-success">Buy</button>
+          </form>
+          {% endif %}
+        </div>
+
+        <li class="nav-item dropdown pe-3">
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <!-- <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle"> -->
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{request.user}}</span>
+          </a><!-- End Profile Image Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>{{request.user}}</h6>
+              
+              {% if request.user.is_authenticated %}
+              <span>Admin</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{%url 'profile'%}">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{%url 'logout' %}">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+                {%else%}
+
+                <span>Client</span>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+  
+              <li>
+                <a class="dropdown-item d-flex align-items-center" href="{%url 'login'%}">
+                  <i class="bi bi-person"></i>
+                  <span>My Profile</span>
+                </a>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+  
+              <li>
+                <a class="dropdown-item d-flex align-items-center" href="{%url 'login' %}">
+                  <i class="bi bi-box-arrow-right"></i>
+                  <span>Sign Out</span>
+                </a>
+              </li>
+              {% endif %}
+                
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="{%url 'products_lists'%}">
+          <i class="bi bi-grid"></i>
+          <span>Products</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+      {% if request.user.is_superuser%}
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{%url 'total_sales'%}">
+          <i class="bi bi-menu-button-wide"></i>
+          <span>Total Sales</span>
+        </a>
+      </li>
+      
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{%url 'create_products'%}">
+          <i class="bi bi-menu-button-wide"></i>
+          <span>Add Product</span>
+        </a>
+      </li>
+      
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{%url 'products_inventory'%}">
+          <i class="bi bi-menu-button-wide"></i>
+          <span>Inventory</span>
+        </a>
+      </li>
+
+
+      {% endif%}
+      {%if request.user.is_authenticated%}
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{%url 'purchase_history'%}">
+          <i class="bi bi-menu-button-wide"></i>
+          <span>Purchase History</span>
+        </a>
+      </li>
+      {%endif%}
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>{%block h1_dashboard%}{%endblock h1_dashboard%}</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{%url 'products_lists'%}">Home</a></li>
+          <li class="breadcrumb-item active">{%block dashboard%}Dashboard{%endblock dashboard%}</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+
+
+    <section class="section dashboard">
+      {%block body%}
+      {%endblock body%}
+    </section>
+  </main>
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <script src="{%static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+
+  <script src="{%static 'assets/js/main.js'%}"></script>
+  <script src="{%static 'assets/js/index.js'%}"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{% block extrajs %}
+
+{% endblock extrajs %}
+</body>
+
+</html>

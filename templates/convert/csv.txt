@@ -1,0 +1,6 @@
+#,User,Product,Quantity,Price,Buy date
+{% for product in info %}"{{ forloop.counter|addslashes }}","{{ product.user|addslashes }}","{{ product.product|addslashes }}","{{ product.quantity|addslashes }}","{{ product.total|addslashes }}","{{ product.buy_date|addslashes }}"
+{% endfor %}
+
+Total:
+{{total.total}}
