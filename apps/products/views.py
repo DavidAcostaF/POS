@@ -10,6 +10,8 @@ import pdfkit
 from django.template import loader
 import csv
 import platform
+from django.core.mail import EmailMessage
+from django.contrib import messages
 # Create your views here.
 
 from . import models
@@ -200,6 +202,7 @@ def get_data(request):
         'info':info,
         'total':total
     }
+
     return data
 
 def get_absolute_path():
@@ -235,6 +238,7 @@ def generate_pdf(request,template_name = 'inventory/pdf.html'):
         f'{settings.STATICFILES_DIRS[0]}/assets/css/style.css', 
         f'{settings.STATICFILES_DIRS[0]}/assets/vendor/bootstrap/css/bootstrap.min.css',
     ]
+
     # html, options=options, configuration=config, css=css
     pdf_file = pdfkit.from_string(html,options = options,configuration = config,css=css)
     return pdf_file
@@ -283,3 +287,18 @@ class CreateCsv(View):
 class DeleteInCart(DeleteView):
     model = models.Cart
     success_url = reverse_lazy('products_lists')
+
+
+def EmailPdf(request):
+    email = EmailMessage(
+        'Total Sales',
+        'Total Sales',
+        settings.EMAIL_HOST_USER,
+        [request.user.email],
+        )
+    email.attach("totalsales.pdf",generate_pdf(request))
+    email.fail_silently = False
+    email.send()
+
+    messages.success(request,'Email Sent')
+    return redirect('total_sales')

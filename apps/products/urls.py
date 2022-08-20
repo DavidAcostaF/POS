@@ -17,4 +17,5 @@ urlpatterns = [
     path('pdf_file/',views.CreatePdf.as_view(),name='pdf_file'),
     path('create_csv/',views.CreateCsv.as_view(),name='create_csv'),
     path('delete_in_cart/<int:pk>',views.DeleteInCart.as_view(),name='delete_in_cart'),
+    path('email_pdf',views.EmailPdf,name='email_pdf')
 ]
