@@ -137,4 +137,11 @@ const deleteInCart = (id) =>{
     }
 
 
-
+function alertActivate(){
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
+        footer: '<a href="">Login or Activate account</a>',
+    })
+}

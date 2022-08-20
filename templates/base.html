@@ -59,7 +59,15 @@
         <input type="text" name="query" placeholder="Search" title="Enter search keyword" value="{%block value%}{%endblock value%}">
         <button type="submit" title="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
       </form>
-    </div><!-- End Search Bar -->
+    </div>
+    
+    {% if request.user.activate == False %}
+    <div class="search-bar">
+      <form action="{%url 'activate_mail'%}" method="post">{% csrf_token %}<h3>Send email to activate <button type="submit" class="btn btn-success">Resend</button></h3></form>
+    </div>
+    {% endif %}
+      
+
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
@@ -124,7 +132,7 @@
               <h6>{{request.user}}</h6>
               
               {% if request.user.is_authenticated %}
-              <span>Admin</span>
+              <span>Client</span>
             </li>
             <li>
               <hr class="dropdown-divider">

@@ -28,7 +28,9 @@ urlpatterns = [
     path('accounts/login/',views.Login.as_view(),name = 'login'),
     path('accounts/register/',views.Register.as_view(),name = 'register'),
     path('accounts/logout/',views.UserLogout,name = 'logout'),
-    path('accounts/profile',views.Profile.as_view(),name='profile'),
-    path('accounts/change_password',views.UpdatePassword.as_view(),name='update_password'),
+    path('accounts/profile/',views.Profile.as_view(),name='profile'),
+    path('accounts/change_password/',views.UpdatePassword.as_view(),name='update_password'),
+    path('accounts/activate/<str:slug>/',views.Activate.as_view(),name='activate'),
+    path('accounts/activate_mail/',views.Resend.as_view(),name='activate_mail'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -302,3 +302,5 @@ def EmailPdf(request):
 
     messages.success(request,'Email Sent')
     return redirect('total_sales')
+
+
