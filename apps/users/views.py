@@ -8,6 +8,9 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from apps.users.forms import FormUser,FormLogin,FormUserUpdate,UpdatePasswordForm
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
+from django.conf import settings
 
 from apps.users.models import MyUser
 from apps.users.forms import FormUser
@@ -75,3 +78,31 @@ class UpdatePassword(View):
             print(form.cleaned_data.get('password1'))
             user.save()
         return redirect('login')
+
+
+class Activate(View):
+    model = MyUser
+
+    def get(self,request,slug):
+        uid = slug
+        user = self.model.objects.get(uuid = uid)
+        user.activate = True
+        user.save()
+        return redirect('login')
+
+
+class Resend(View):
+    def post(self,request):
+        template = render_to_string('mails/activate.html',{
+            'uid':request.user.uuid
+        })
+        mail = EmailMultiAlternatives(
+        'Activate account',
+        template,
+        from_email=settings.EMAIL_HOST_USER,
+        to=[request.user.email],
+        )
+        mail.fail_silently = False
+        mail.attach_alternative(template,'text/html')
+        mail.send()
+        return redirect('products_lists')

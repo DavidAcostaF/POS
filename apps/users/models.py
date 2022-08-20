@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager,AbstractBaseUser,PermissionsMixin
 
+
+
 # Create your models here.
 
 class MyUserManager(BaseUserManager):
@@ -44,6 +46,8 @@ class MyUser(AbstractBaseUser,PermissionsMixin):
     address = models.CharField(max_length=200,null = True,blank=True)
     phone = models.CharField(max_length=10)
     image = models.ImageField(upload_to='profile')
+    uuid = models.CharField(null= True,blank=True,max_length=10)
+    activate = models.BooleanField(default=False)
     objects = MyUserManager()
     
     USERNAME_FIELD = 'email'
@@ -51,3 +55,10 @@ class MyUser(AbstractBaseUser,PermissionsMixin):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
+
+
+
+
+
+
+
