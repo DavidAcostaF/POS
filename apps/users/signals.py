@@ -8,9 +8,6 @@ import uuid
 
 from .models import MyUser
 
-
-
-
 def AddUuid(sender,instance,**kwargs):
     print('si')
     if instance.uuid == None:

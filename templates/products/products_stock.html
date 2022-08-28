@@ -22,12 +22,13 @@
             <p style="float: right;"><label for="">Stock:</label> {{product.stock}}</p>
             {% if request.user.activate == True %}
             <form action="{%url 'add_car' product.id%}" method="post">{% csrf_token %}
-                <button type="submit" class="btn btn-success" {% comment %}onclick="addToCar({{product.id}})" {% endcomment %}><i class="fa-solid fa-cart-plus"></i>Add To Car</button>
+                <button type="submit" class="btn btn-success"><i class="fa-solid fa-cart-plus"></i>Add To Cart</button>
             </form>
-            {%else%}
-            <button type="submit" class="btn btn-success" onclick="alertActivate()"><i class="fa-solid fa-cart-plus"></i>Add To Car</button>
-            {% endif %}
             <a href="{%url 'product_detail' product.name%}" class="btn btn-link" style="margin-top: 80px;color: white; font-size: 20px; text-decoration: none;">Click to more</a>
+            {%else%}
+            <button type="submit" class="btn btn-success" onclick="alertActivate()"><i class="fa-solid fa-cart-plus"></i>Add To Cart</button>
+            <a href="{%url 'login'%}" class="btn btn-link" style="margin-top: 80px;color: white; font-size: 20px; text-decoration: none;">Click to more</a>
+            {% endif %}
         </div>
     </div>
     {% endfor %}

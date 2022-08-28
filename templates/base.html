@@ -92,7 +92,6 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
-                <th scope="col">Description</th>
                 <th scope="col">Cost</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Subtotal</th>
@@ -104,7 +103,6 @@
               <tr style="color: white;" id="product_{{cart.id}}">
                 <th scope="row">{{forloop.counter}}</th>
                 <td>{{cart.product.name}}</td>
-                <td>{{cart.product.description}}</td>
                 <td id="cost_{{cart.id}}">{{cart.product.price}}</td>
                 <td><input type="number" value="{{cart.quantity}}" min="0" name="" max="{{cart.product.stock}}" id="quantity_{{cart.id}}" style="width: 50px; color: white; background: #111;" onclick="updateQuantity({{cart.id}})" onchange="updateQuantity({{cart.id}})"></td>
                 <td id="subtotal_{{cart.id}}" class="sub_total">{{cart.subtotal}}</td>

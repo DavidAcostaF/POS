@@ -110,7 +110,7 @@ function addToCarWithQuantity(id){
 
 
 const deleteInCart = (id) =>{
-
+    let product = document.getElementById(`product_${id}`)
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -127,7 +127,8 @@ const deleteInCart = (id) =>{
                     dataType:'json',
                     data:{csrfmiddlewaretoken:$("[name = 'csrfmiddlewaretoken']").val()}
                 })
-              Swal.fire(
+            product.innerHTML = ""
+            Swal.fire(
                 'Deleted!',
                 'Your file has been deleted.',
                 'success'
