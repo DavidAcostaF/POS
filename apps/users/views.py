@@ -3,7 +3,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render,redirect
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout,authenticate
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
@@ -21,6 +21,21 @@ class Register(CreateView):
     template_name = 'accounts/register.html'
     form_class = FormUser
     success_url = reverse_lazy('login')
+
+    def post(self,request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password1')
+            user = authenticate(request,username = username,password = password)
+            print(user)
+            login(request,user)
+            return redirect('products_lists')
+        context = {
+            'form_errors':form.errors
+        }
+        return render(request,self.template_name,context)
 
 class Login(FormView):
     template_name = 'accounts/login.html'
